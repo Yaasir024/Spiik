@@ -8,12 +8,12 @@
       <div class="right">
         <div class="form-container">
           <div class="login">
-            <form action="">
+            <form @submit.prevent="login">
               <div class="email">
                 <input
                   type="email"
                   placeholder="Email address"
-                  v-model="login_form.password"
+                  v-model="login_form.email"
                 />
               </div>
               <div class="password">
@@ -35,7 +35,7 @@
             </button>
           </div>
           <div class="signup" :class="showSignup ? 'show' : 'hide'">
-            <form action="">
+            <form action="" @submit.prevent="register">
               <div class="name">
                 <input
                   type="text"
@@ -89,9 +89,19 @@ const showSignup = ref(false);
 const login_form = ref({});
 const register_form = ref({});
 const store = useStore();
+
+const login = () => {
+    console.log('Login', login_form.value)
+    store.dispatch("login", login_form.value);
+    
+}
+const register = () => {
+    console.log('Register', register_form.value)
+    store.dispatch("register", register_form.value);
+}
 </script>
 
-<style>
+<style scoped>
 /* Reuseables */
 .blue-btn {
   background: rgba(53, 109, 200, 0.9);

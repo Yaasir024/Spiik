@@ -3,6 +3,6 @@
 
 <template>
   <main>
-    Home
+    <button>Log Out</button>
   </main>
 </template>
