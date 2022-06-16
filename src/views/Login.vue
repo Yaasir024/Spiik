@@ -10,29 +10,44 @@
           <div class="login">
             <form action="">
               <div class="email">
-                <input type="text" name="email" placeholder="Email address" />
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  v-model="login_form.password"
+                />
               </div>
               <div class="password">
                 <input
                   type="password"
-                  name="password"
-                  id="password"
                   placeholder="Password"
+                  v-model="login_form.password"
                 />
               </div>
-              <button type="submit" class="login-btn blue-btn">Log In</button>
-              <a href="#" class="forgot-password">Forgotten Password?</a>
+              <input class="login-btn blue-btn" type="submit" value="Log In" />
             </form>
-            <button type="submit" class="signup-btn green-btn" @click="showSignup = true">Create an Account</button>
+              <a href="#" class="forgot-password">Forgotten Password?</a>
+            <button
+              type="submit"
+              class="signup-btn green-btn"
+              @click="showSignup = true"
+            >
+              Create an Account
+            </button>
           </div>
           <div class="signup" :class="showSignup ? 'show' : 'hide'">
             <form action="">
               <div class="name">
                 <input
                   type="text"
-                  name="name"
-                  id="name"
                   placeholder="Enter Your Name"
+                  v-model="register_form.name"
+                />
+              </div>
+              <div class="username">
+                <input
+                  type="text"
+                  placeholder="Enter Your Username"
+                  v-model="register_form.username"
                 />
               </div>
               <div class="email">
@@ -40,32 +55,40 @@
                   type="text"
                   name="email"
                   placeholder="Enter your Email address"
+                  v-model="register_form.email"
                 />
               </div>
               <div class="password">
                 <input
                   type="password"
-                  name="password"
-                  id="password"
                   placeholder="Password"
+                  v-model="register_form.password"
                 />
               </div>
-
-              <button type="submit" class="signup-btn blue-btn">Sign Up</button>
+                <input class="signup-btn blue-btn" type="submit" value="Sign Up" />
             </form>
             <hr />
-            <button type="submit" class="login-btn green-btn" @click="showSignup = false">Log In</button>
+            <button
+              type="submit"
+              class="login-btn green-btn"
+              @click="showSignup = false"
+            >
+              Log In
+            </button>
           </div>
         </div>
       </div>
-
     </div>
   </section>
 </template>
 
 <script setup>
+import { useStore } from "vuex";
 import { ref, reactive } from "vue";
 const showSignup = ref(false);
+const login_form = ref({});
+const register_form = ref({});
+const store = useStore();
 </script>
 
 <style>
@@ -108,16 +131,17 @@ input {
 
 .email,
 .password,
-.name {
+.name,
+.username {
   padding: 10px 5px;
 }
 .show {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 .hide {
-    visibility: hidden;
-    opacity: 0;
+  visibility: hidden;
+  opacity: 0;
 }
 
 /* Login Page */
@@ -217,7 +241,8 @@ input {
   }
 }
 @media only screen and (max-width: 450px) {
-  .login, .signup {
+  .login,
+  .signup {
     width: 350px;
   }
 }
