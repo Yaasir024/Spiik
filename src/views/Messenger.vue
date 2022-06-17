@@ -127,6 +127,19 @@
           </div>
           <div class="chat-msg owner">
             <div class="chat-msg-text">
+              <span>
+                <img
+                  src="https://media0.giphy.com/media/yYSSBtDgbbRzq/giphy.gif?cid=ecf05e47344fb5d835f832a976d1007c241548cc4eea4e7e&amp;rid=giphy.gif"
+                />
+              </span>
+              <div class="chat-msg-detail">
+                <span>Y0u</span>
+                <span>1.45pm</span>
+              </div>
+            </div>
+          </div>
+          <div class="chat-msg owner">
+            <div class="chat-msg-text">
               <span> Been out of town </span>
               <div class="chat-msg-detail">
                 <span>Y0u</span>
@@ -299,6 +312,10 @@ export default {};
   font-weight: 500;
   margin-left: 12px;
   max-width: 70%;
+}
+.chat-msg-text img {
+    max-width: 300px;
+    width: 100%;
 }
 .owner {
   flex-direction: row-reverse;
