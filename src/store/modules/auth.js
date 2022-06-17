@@ -74,7 +74,6 @@ const actions = {
       return;
     }
     commit("SET_USER", auth.currentUser);
-    console.log("Register");
     router.push("/login");
   },
 

@@ -90,7 +90,7 @@
 <script setup>
 import ProfileEdit from "@/components/ProfileEdit.vue";
 import { useStore } from "vuex";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { mapMutations } from "vuex";
 import { onBeforeMount, computed } from "vue";
 const showSignup = ref(false);
@@ -98,13 +98,17 @@ const login_form = ref({});
 const register_form = ref({});
 const store = useStore();
 
+
+onMounted(() => {
+  store.dispatch("getAllUsers");
+})
+
 const user = computed(() => store.getters.users);
 
 const login = () => {
   store.dispatch("login", login_form.value);
 };
 const register = () => {
-  console.log("register", register_form.value);
   store.dispatch("register", register_form.value);
 };
 </script>

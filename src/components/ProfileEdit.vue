@@ -150,13 +150,29 @@
         </div>
       </div>
       <div class="btn-container">
-        <button type="submit" class="login-btn green-btn" @click="submit(userDetails)">
+        <button
+          type="submit"
+          class="login-btn green-btn"
+          @click="submit(userDetails, allUsers)"
+        >
           Submit
         </button>
       </div>
     </div>
   </div>
-  <!-- <Dispatch :userDetails="userDetails" /> -->
+  <div class="modal-container" :class="showModal ? 'show' : 'hide'">
+    <div class="modal">
+      <h1>Are You Sure you want to submit</h1>
+      <div class="button-container">
+        <button @click="showModal = false">No</button>
+        <button @click="pushSubmit(userDetails)">
+          <div class="button-backdrop" @click="showModal = false"></div>
+          Yes
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop" :class="showModal ? 'show' : 'hide'"></div>
 </template>
 
 <script>
@@ -165,10 +181,8 @@ import { mapState } from "vuex";
 import { useStore } from "vuex";
 import { onBeforeMount, computed } from "vue";
 import { mapMutations } from "vuex";
-import Dispatch from "@/components/Dispatch.vue";
 
 export default {
-    components:{Dispatch},
   props: ["register_form"],
   data() {
     return {
@@ -184,20 +198,13 @@ export default {
         email: "",
         uid: "",
       },
+      showModal: false,
     };
   },
   computed: {
-    ...mapGetters(["users", "user"]),
-    // user() {
-    //   const store = useStore();
-    //   store.getters.users;
-    // },
+    ...mapGetters(["users", "user", "allUsers"]),
   },
   methods: {
-    openPalette(i) {
-      this.showPalette = !this.showPalette;
-      this.currentId = i;
-    },
     previewImage(event) {
       let input = event.target;
       if (input.files) {
@@ -209,38 +216,38 @@ export default {
         reader.readAsDataURL(input.files[0]);
       }
     },
-    // submit() {
-    //   const store = useStore();
-    //   console.log(this.userDetails);
-    //   store.dispatch("addUser", this.userDetails);
-    // },
+    submit(userDetails) {
+      let allUsername = [];
+      this.allUsers.forEach((element, index) => {
+        allUsername.push(element.username);
+      });
+      if (allUsername.includes(this.userDetails.username)) {
+        alert("Username already in use");
+      } else {
+        this.showModal = true;
+      }
+    },
   },
   mounted() {
     this.userDetails.name = this.register_form.name;
     this.userDetails.username = this.register_form.username;
     this.userDetails.email = this.register_form.email;
     this.userDetails.uid = this.users.uid;
-
-    console.log(this.userDetails, 'done');
   },
   setup() {
     const store = useStore();
 
     const user = computed(() => store.getters.users);
-
-    
-    const submit = (data) => {
-    //   const store = useStore();
-    //   console.log(userDetails.value);
-      console.log(data, 'Data values');
+    const allUsers = computed(() => store.getters.allUsers);
+    const pushSubmit = (data) => {
       store.dispatch("addUser", data);
-      
-    }
+    };
 
     return {
+      allUsers,
       store,
       user,
-      submit,
+      pushSubmit,
     };
   },
 };
@@ -364,5 +371,62 @@ export default {
   left: 0;
   top: 0;
   /* display: none; */
+}
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 200;
+}
+.modal-backdrop {
+  background: rgba(0, 0, 0, 0.566);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: 2;
+}
+.modal {
+  background: rgb(248, 249, 249);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  z-index: 200;
+}
+.modal .button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+.modal .button-container button {
+  background: rgb(128, 128, 128);
+  border: none;
+  border-radius: 6px;
+  font-size: 20px;
+  padding: 10px 10px;
+  width: 80px;
+  transition: all 0.3s ease-in-out;
+  margin-right: 5px;
+  position: relative;
+}
+.modal .button-container button:hover {
+  background: rgba(128, 128, 128, 0.881);
+}
+.modal .button-container button .button-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: green;
+  width: 80px;
+  height: 40px;
+  opacity: 0;
 }
 </style>
