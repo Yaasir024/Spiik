@@ -1,5 +1,5 @@
 <template>
-  <section class="login-page">
+  <section class="login-page" v-if="!user">
     <div class="content-container">
       <div class="left">
         <h1 class="logo">Spiik</h1>
@@ -25,7 +25,7 @@
               </div>
               <input class="login-btn blue-btn" type="submit" value="Log In" />
             </form>
-              <a href="#" class="forgot-password">Forgotten Password?</a>
+            <a href="#" class="forgot-password">Forgotten Password?</a>
             <button
               type="submit"
               class="signup-btn green-btn"
@@ -65,7 +65,11 @@
                   v-model="register_form.password"
                 />
               </div>
-                <input class="signup-btn blue-btn" type="submit" value="Sign Up" />
+              <input
+                class="signup-btn blue-btn"
+                type="submit"
+                value="Sign Up"
+              />
             </form>
             <hr />
             <button
@@ -80,25 +84,29 @@
       </div>
     </div>
   </section>
+  <ProfileEdit :register_form="register_form" v-if="user" />
 </template>
 
 <script setup>
+import ProfileEdit from "@/components/ProfileEdit.vue";
 import { useStore } from "vuex";
 import { ref, reactive } from "vue";
+import { mapMutations } from "vuex";
+import { onBeforeMount, computed } from "vue";
 const showSignup = ref(false);
 const login_form = ref({});
 const register_form = ref({});
 const store = useStore();
 
+const user = computed(() => store.getters.users);
+
 const login = () => {
-    console.log('Login', login_form.value)
-    store.dispatch("login", login_form.value);
-    
-}
+  store.dispatch("login", login_form.value);
+};
 const register = () => {
-    console.log('Register', register_form.value)
-    store.dispatch("register", register_form.value);
-}
+  console.log("register", register_form.value);
+  store.dispatch("register", register_form.value);
+};
 </script>
 
 <style scoped>
@@ -158,6 +166,8 @@ input {
 .login-page {
   padding-bottom: 112px;
   padding-top: 72px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .login-page .content-container {
   margin: 0 auto;

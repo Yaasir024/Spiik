@@ -7,10 +7,12 @@ import {
   signOut,
 } from "firebase/auth";
 import auths from "./modules/auth";
+import user from "./modules/user";
 
 const store = createStore({
   modules: {
     auths,
+    user,
   },
 });
 

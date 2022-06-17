@@ -31,6 +31,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/messenger',
+      name: 'messenger',
+      component: () => import('../views/Messenger.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/login',
       name: 'login',
       component: Login

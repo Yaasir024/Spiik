@@ -49,13 +49,10 @@ const actions = {
   },
 
   async register({ commit }, details) {
-    const { name, username, email, password } = details;
+    const { email, password } = details;
 
     try {
-      await Promise.allSettled([
-        createUserWithEmailAndPassword(auth, email, password),
-        addDoc(collection(db, "users"), { name:name, username:username, email:email }),
-      ]);
+      await createUserWithEmailAndPassword(auth, email, password);
     } catch (error) {
       switch (error.code) {
         case "auth/email-already-in-use":
@@ -70,19 +67,15 @@ const actions = {
         case "auth/weak-password":
           alert("Weak password");
           break;
-        case "Error adding document":
-            alert("Error adding document");
-            break;
         default:
           alert("Something went wrong");
       }
 
       return;
     }
-
     commit("SET_USER", auth.currentUser);
-
-    router.push("/profile-form");
+    console.log("Register");
+    router.push("/login");
   },
 
   async logout({ commit }) {
